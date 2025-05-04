@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Basketball Training Simulator</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
   <style>
     input[type=number] {
       width: 60px;
@@ -22,11 +23,52 @@
     .table td, .table th {
       padding: 0.5rem;
     }
+    .player-card {
+      border: 1px solid #ddd;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #f9f9f9;
+      margin-bottom: 2rem;
+    }
   </style>
 </head>
 <body class="p-4">
   <div class="container">
-    <div class="fixed-controls d-flex flex-wrap gap-2">
+    <div class="accordion mb-4" id="instructionsAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingInfo">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInfo" aria-expanded="true" aria-controls="collapseInfo">
+        Instruções e Tradução
+      </button>
+    </h2>
+    <div id="collapseInfo" class="accordion-collapse collapse show" aria-labelledby="headingInfo" data-bs-parent="#instructionsAccordion">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Instruções:</strong><br>
+            1. Para usar o simulador de treino basta colocarem cada nível de cada habilidade do vosso jogador.<br>
+            2. Após preencherem os atributos do jogador, clickem em <strong>'Add Season'</strong>, isto vai fazer com que uma temporada de treinos possa ser simulada, podem seleccionar qualquer tipo de treino, e podem simular várias temporadas de treino.
+          </div>
+          <div class="col-md-6">
+            <strong>Tradução:</strong><br>
+            JS = Lançamento<br>
+            JR = Distancia de Lançamento<br>
+            OD = Defesa Exterior<br>
+            DR = Penetração<br>
+            HA = Drible<br>
+            PA = Passe<br>
+            IS = Lançamento Interior<br>
+            ID = Defesa Interior<br>
+            RB = Ressalto<br>
+            SB = Desarme de Lançamento
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="fixed-controls d-flex flex-wrap gap-2 mb-3">
       <button class="btn btn-success" onclick="addSeason()">Add Season</button>
       <button class="btn btn-danger" onclick="removeSeason()">Remove Last Season</button>
       <button class="btn btn-primary" onclick="simulateTraining()">Simulate Training</button>
@@ -44,35 +86,40 @@
       </div>
     </div>
 
-    <div class="mb-4 mt-4">
-      <h5>Player Input</h5>
-      <table class="table table-bordered text-center align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>Name</th><th>Age</th><th>JS</th><th>JR</th><th>OD</th><th>HA</th><th>DR</th>
-            <th>PA</th><th>IS</th><th>ID</th><th>RB</th><th>SB</th><th>Height</th><th>Potential</th><th>Position</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr id="playerRow">
-            <td><input type="text" class="form-control" id="playerName" value="j"></td>
-            <td><input type="number" class="form-control" id="playerAge" value="19"></td>
-            <td><input type="number" class="form-control" id="JS" value="6"></td>
-            <td><input type="number" class="form-control" id="JR" value="7"></td>
-            <td><input type="number" class="form-control" id="OD" value="7"></td>
-            <td><input type="number" class="form-control" id="HA" value="7"></td>
-            <td><input type="number" class="form-control" id="DR" value="7"></td>
-            <td><input type="number" class="form-control" id="PA" value="7"></td>
-            <td><input type="number" class="form-control" id="IS" value="7"></td>
-            <td><input type="number" class="form-control" id="ID" value="7"></td>
-            <td><input type="number" class="form-control" id="RB" value="7"></td>
-            <td><input type="number" class="form-control" id="SB" value="7"></td>
-            <td><select class="form-select" id="height"><option selected>6'01" / 185cm</option></select></td>
-            <td><select class="form-select" id="potential"><option selected>09 - MVP</option></select></td>
-            <td><input type="text" class="form-control" id="position" value="PG"></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="row">
+      <div class="col-12 player-card">
+        <h5>Player Input</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Name</th><th>Age</th><th>JS</th><th>JR</th><th>OD</th><th>HA</th><th>DR</th>
+                <th>PA</th><th>IS</th><th>ID</th><th>RB</th><th>SB</th><th>Height</th><th>Potential</th><th>Position</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="playerRow">
+                <td><input type="text" class="form-control" id="playerName" value="Nome"></td>
+                <td><input type="number" class="form-control" id="playerAge" value="18"></td>
+                <td><input type="number" class="form-control" id="JS" value="7"></td>
+                <td><input type="number" class="form-control" id="JR" value="7"></td>
+                <td><input type="number" class="form-control" id="OD" value="7"></td>
+                <td><input type="number" class="form-control" id="HA" value="7"></td>
+                <td><input type="number" class="form-control" id="DR" value="7"></td>
+                <td><input type="number" class="form-control" id="PA" value="7"></td>
+                <td><input type="number" class="form-control" id="IS" value="7"></td>
+                <td><input type="number" class="form-control" id="ID" value="7"></td>
+                <td><input type="number" class="form-control" id="RB" value="7"></td>
+                <td><input type="number" class="form-control" id="SB" value="7"></td>
+                <td><select class="form-select" id="height"></select></td>
+                <td><select class="form-select" id="potential"></select></td>
+                <td><input type="text" class="form-control" id="position" value="PG"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Future Player Columns Can Be Cloned Here -->
     </div>
 
     <div class="mb-5">
@@ -81,7 +128,7 @@
       <table class="table table-bordered text-center align-middle">
         <thead class="table-light">
           <tr>
-            <th>JS</th><th>JR</th><th>OD</th><th>HA</th><th>DR</th><th>PA</th><th>IS</th><th>ID</th><th>RB</th><th>SB</th>
+            <th>Name</th><th>JS</th><th>JR</th><th>OD</th><th>HA</th><th>DR</th><th>PA</th><th>IS</th><th>ID</th><th>RB</th><th>SB</th>
           </tr>
         </thead>
         <tbody>
@@ -93,91 +140,6 @@
     <div id="seasonsContainer"></div>
   </div>
 
-  <script>
-    let seasonCount = 0;
-    const baseStats = ['JS','JR','OD','HA','DR','PA','IS','ID','RB','SB'];
-    const weeks = Array.from({ length: 14 }, (_, i) => `Week ${i + 1}`);
-    const trainingEffects = {
-      'BALL HANDLING (PG)': { HA: 0.4, DR: 0.5 },
-      'INSIDE DEFENSE (PF/C)': { ID: 0.5, SB: 0.3 },
-      'INSIDE SCORING (PF/C)': { IS: 0.5 },
-      'JUMP SHOT (PG/SG)': { JS: 0.5, JR: 0.2 },
-      'ONE ON ONE (PG/SG)': { DR: 0.4, JS: 0.2 },
-      'OUTSIDE SHOOTING (PG/SG)': { JR: 0.5 },
-    };
-
-    function addSeason() {
-      seasonCount++;
-      const baseAge = parseInt(document.getElementById('playerAge').value);
-      const container = document.getElementById('seasonsContainer');
-      const seasonDiv = document.createElement('div');
-      seasonDiv.id = `season${seasonCount}`;
-      seasonDiv.classList.add('mt-5');
-      const trainingOptions = Object.keys(trainingEffects).map(opt => `<option>${opt}</option>`).join('');
-
-      seasonDiv.innerHTML = `
-        <h5>Season ${seasonCount}</h5>
-        <div class="mb-2">
-          <label>Player Age for Season ${seasonCount}: </label>
-          <input type="number" class="form-control d-inline-block w-auto ms-2" id="seasonAge${seasonCount}" value="${baseAge + seasonCount}">
-        </div>
-        <div class="mb-3">
-          <label>Apply training to all 14 weeks:</label>
-          <select class="form-select form-select-sm d-inline-block w-auto" id="seasonApplyAll${seasonCount}">
-            <option value="">-- Choose Training Type --</option>
-            ${trainingOptions}
-          </select>
-          <button class="btn btn-sm btn-outline-primary ms-2" onclick="applyTrainingToSeason(${seasonCount})">Apply to All Weeks</button>
-        </div>
-        <table class="table table-bordered text-center align-middle">
-          <thead class="table-light">
-            <tr><th>Week</th><th>Training Type</th></tr>
-          </thead>
-          <tbody id="seasonBody${seasonCount}">
-            ${weeks.map((w, i) => `
-              <tr>
-                <td>${w}</td>
-                <td><select class="form-select form-select-sm training-select">${trainingOptions}</select></td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      `;
-      container.appendChild(seasonDiv);
-    }
-
-    function removeSeason() {
-      if (seasonCount === 0) return;
-      const lastSeason = document.getElementById(`season${seasonCount}`);
-      if (lastSeason) lastSeason.remove();
-      seasonCount--;
-    }
-
-    function applyTrainingToSeason(seasonNum) {
-      const selected = document.getElementById(`seasonApplyAll${seasonNum}`).value;
-      if (!selected) return;
-      const selects = document.querySelectorAll(`#seasonBody${seasonNum} .training-select`);
-      selects.forEach(sel => sel.value = selected);
-    }
-
-    function simulateTraining() {
-      const coachMultiplier = parseFloat(document.getElementById("coachQuality").value);
-      const playerStats = {};
-      baseStats.forEach(stat => {
-        playerStats[stat] = parseFloat(document.getElementById(stat).value);
-      });
-      for (let s = 1; s <= seasonCount; s++) {
-        const selects = document.querySelectorAll(`#seasonBody${s} .training-select`);
-        selects.forEach(select => {
-          const effect = trainingEffects[select.value];
-          for (let stat in effect) {
-            playerStats[stat] += effect[stat] * coachMultiplier;
-          }
-        });
-      }
-      const resultRow = document.getElementById("resultRow");
-      resultRow.innerHTML = baseStats.map(stat => `<td>${playerStats[stat].toFixed(2)}</td>`).join('');
-      document.getElementById("playerSummary").textContent = `Player: ${document.getElementById("playerName").value}`;
-    }
-  </script>
+  <script src="logic.js" defer></script>
 </body>
 </html>
