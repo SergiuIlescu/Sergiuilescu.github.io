@@ -1,4 +1,4 @@
-// Refactored simulateTraining function with corrected gain and elastic logic
+// Fixed and refactored logic.js to correctly apply training effects including SB
 
 const baseStats = ['JS','JR','OD','HA','DR','PA','IS','ID','RB','SB'];
 
@@ -29,10 +29,10 @@ const trainingEffects = {
   "ID (C)": { IS: 0.05, ID: 0.5, SB: 0.1 },
   "ID (PF/C)": { IS: 0.0375, ID: 0.375, SB: 0.075 },
   "ID (SF/PF/C)": { IS: 0.02, ID: 0.2, SB: 0.04 },
-  "RB (PF/C)": { IS: 0.05, ID: 0.05, REB: 0.5 },
-  "RB (team)": { IS: 0.022, ID: 0.022, REB: 0.22 },
+  "RB (PF/C)": { IS: 0.05, ID: 0.05, RB: 0.5 },
+  "RB (team)": { IS: 0.022, ID: 0.022, RB: 0.22 },
   "SB (C)": { ID: 0.2, RB: 0.1, SB: 0.5 },
-  "SB (PF/C)": { ID: 0.15, RB: 0.075, SB: 0.0375 },
+  "SB (PF/C)": { ID: 0.15, RB: 0.075, SB: 0.375 },
   "SB (team)": { ID: 0.08, RB: 0.04, SB: 0.2 }
 };
 
@@ -55,36 +55,21 @@ const elasticEffects = {
 };
 
 function getAgeCoefficient(age) {
-  if (age <= 18) return 1.00;
-  if (age === 19) return 0.95;
-  if (age === 20) return 0.88;
-  if (age === 21) return 0.78;
-  if (age === 22) return 0.7;
-  if (age === 23) return 0.6;
-  if (age === 24) return 0.51;
-  if (age === 25) return 0.42;
-  if (age === 26) return 0.35;
-  if (age === 27) return 0.27;
-  if (age === 28) return 0.21;
-  if (age === 29) return 0.16;
-  if (age === 30) return 0.11;
-  if (age === 31) return 0.07;
-  if (age === 32) return 0.05;
-  if (age === 33) return 0.03;
-  if (age === 34) return 0.02;
-  if (age === 35) return 0.01;
-  return 0;
+  const table = {
+    18: 1.00, 19: 0.95, 20: 0.88, 21: 0.78, 22: 0.7, 23: 0.6, 24: 0.51,
+    25: 0.42, 26: 0.35, 27: 0.27, 28: 0.21, 29: 0.16, 30: 0.11,
+    31: 0.07, 32: 0.05, 33: 0.03, 34: 0.02, 35: 0.01
+  };
+  return table[age] || 0;
 }
 
 function simulateTraining() {
   const coachCoefficient = parseFloat(document.getElementById("coachQuality").value);
   const playerStats = {};
   baseStats.forEach(stat => {
-    playerStats[stat] = parseFloat(document.getElementById(stat).value);
+    playerStats[stat] = parseFloat(document.getElementById(stat).value) || 0;
   });
-  const baseAge = parseInt(document.getElementById("playerAge").value);
   const playerName = document.getElementById("playerName").value;
-
 
   for (let s = 1; s <= seasonCount; s++) {
     const selects = document.querySelectorAll(`#seasonBody${s} .training-select`);
@@ -95,33 +80,23 @@ function simulateTraining() {
       const effect = trainingEffects[select.value];
       if (!effect) return;
 
-      const currentGains = {}; // store base gains per stat before applying
-
-      // Step 1: Calculate base gain per stat with coachCoefficient
+      const currentGains = {};
       for (let stat in effect) {
-        const baseGain = effect[stat] * ageCoefficient;
-        const finalGain = baseGain * coachCoefficient;
-        currentGains[stat] = finalGain;
+        currentGains[stat] = (effect[stat] * ageCoefficient) * coachCoefficient;
       }
 
-      // Step 2: Apply Elastic Effects (only if stat is a base in trainingEffect)
-      for (let baseAttr in effect) {
+      // Apply elastic effects
+      for (let baseAttr in currentGains) {
         for (let key in elasticEffects) {
           const [elasticBase, elasticTarget] = key.split('->');
-
-          if (elasticBase !== baseAttr) continue; // Only if this base is in the training type
-
-          if (playerStats[elasticTarget] > playerStats[elasticBase]) {
+          if (elasticBase === baseAttr && playerStats[elasticTarget] > playerStats[elasticBase]) {
             const diff = playerStats[elasticTarget] - playerStats[elasticBase];
-            const multiplier = elasticEffects[key];
-            const elasticFactor = diff * multiplier;
-            const elasticGain = currentGains[baseAttr] * elasticFactor;
-            currentGains[baseAttr] += elasticGain; // add elastic gain to baseAttr
+            const elasticFactor = diff * elasticEffects[key];
+            currentGains[baseAttr] += currentGains[baseAttr] * elasticFactor;
           }
         }
       }
 
-      // Step 3: Apply the gains to playerStats
       for (let stat in currentGains) {
         playerStats[stat] += currentGains[stat];
       }
@@ -129,7 +104,7 @@ function simulateTraining() {
   }
 
   const resultRow = document.getElementById("resultRow");
-  resultRow.innerHTML = baseStats.map(stat => `<td>${playerStats[stat].toFixed(2)}</td>`).join('');
+  resultRow.innerHTML = `<td>${playerName}</td>` + baseStats.map(stat => `<td>${playerStats[stat].toFixed(2)}</td>`).join('');
   document.getElementById("playerSummary").textContent = `Player: ${playerName}`;
 }
 
@@ -168,8 +143,8 @@ function addSeason() {
         <tr><th>Week</th><th>Training Type</th></tr>
       </thead>
       <tbody id="seasonBody${seasonCount}">
-        ${Array.from({ length: 14 }, (_, i) => `
-          <tr>
+        ${Array.from({ length: 14 }, (_, i) =>
+          `<tr>
             <td>Week ${i + 1}</td>
             <td><select class="form-select form-select-sm training-select">${trainingOptions}</select></td>
           </tr>`).join('')}
@@ -188,7 +163,6 @@ function removeSeason() {
 
 let seasonCount = 0;
 
-
 const heightOptions = [
   "175cm", "178cm", "180cm", "183cm", "185cm", "188cm",
   "190cm", "193cm", "196cm", "198cm", "201cm", "203cm",
@@ -197,28 +171,16 @@ const heightOptions = [
 ];
 
 const potentialOptions = [
-  "Speaker",
-  "Reserva",
-  "Jogador útil",
-  "6º Homem",
-  "Titular",
-  "Estrela",
-  "Super-estrela",
-  "Vedeta",
-  "Super-vedeta",
-  "MVP",
-  "Jogador Histórico",
-  "Melhor jogador de sempre"
+  "Speaker", "Reserva", "Jogador útil", "6º Homem", "Titular", "Estrela",
+  "Super-estrela", "Vedeta", "Super-vedeta", "MVP", "Jogador Histórico", "Melhor jogador de sempre"
 ];
 
 window.addEventListener('DOMContentLoaded', () => {
   populateStaticDropdowns();
-
   baseStats.forEach(stat => {
     const input = document.getElementById(stat);
     if (input) input.value = 7;
   });
-
   const nameInput = document.getElementById('playerName');
   if (nameInput) nameInput.value = 'name';
 });
