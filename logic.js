@@ -3,8 +3,8 @@
 const baseStats = ['JS','JR','OD','HA','DR','PA','IS','ID','RB','SB'];
 
 const trainingEffects = {
-  "JS (PG/SG)":   { JS:0.5,   JR:0.1,   DR:0.05,  HA:0.05 },
-  "JS (SF/PF)":   { JS:0.4,   JR:0.05,  IS:0.2 },
+  "JS (PG/SG)":   { JS:0.6,   JR:0.2,   DR:0.05,  HA:0.05 },
+  "JS (SF/PF)":   { JS:0.4,   JR:0.15,  IS:0.25 },
   "JS (SG/SF)":   { JS:0.5,   JR:0.1,   DR:0.05,  HA:0.05 },
   "JS (team)":    { JS:0.22,  JR:0.04,  DR:0.02,  HA:0.02 },
   "JR (SG)":      { JS:0.2,   JR:0.4,   DR:0.05,  HA:0.05 },
@@ -55,19 +55,19 @@ const heightMultipliers = {
   "190cm": { JS:1,   JR:1.2,  OD:1.2,  HA:1,    DR:1,   PA:1,   IS:0.8,  ID:0.8,  RB:0.8,  SB:0.8 },
   "193cm": { JS:1,   JR:1.15, OD:1.15, HA:1,    DR:1,   PA:1,   IS:0.85, ID:0.85, RB:0.85, SB:0.85 },
   "196cm": { JS:1,   JR:1.1,  OD:1.1,  HA:1,    DR:1,   PA:1,   IS:0.9,  ID:0.9,  RB:0.9,  SB:0.9 },
-  "198cm": { JS:1,   JR:1.05, OD:1.05, HA:1,    DR:1,   PA:1,   IS:0.95, ID:0.95, RB:0.95, SB:0.95 },
-  "201cm": { JS:1,   JR:1,    OD:1,    HA:1,    DR:1,   PA:1,   IS:1,    ID:1,    RB:1,    SB:1   },
-  "203cm": { JS:1,   JR:0.95, OD:0.95, HA:1,    DR:1,   PA:1,   IS:1.05, ID:1.05, RB:1.05, SB:1.05 },
-  "206cm": { JS:1,   JR:0.9,  OD:0.9,  HA:1,    DR:1,   PA:1,   IS:1.1,  ID:1.1,  RB:1.1,  SB:1.1 },
-  "208cm": { JS:1,   JR:0.85, OD:0.85, HA:1,    DR:1,   PA:1,   IS:1.15, ID:1.15, RB:1.15, SB:1.15 },
-  "211cm": { JS:1,   JR:0.8,  OD:0.8,  HA:1,    DR:1,   PA:1,   IS:1.2,  ID:1.2,  RB:1.2,  SB:1.2 },
-  "213cm": { JS:1,   JR:0.75, OD:0.75, HA:1,    DR:1,   PA:1,   IS:1.25, ID:1.25, RB:1.25, SB:1.25 },
-  "216cm": { JS:1,   JR:0.7,  OD:0.7,  HA:1,    DR:1,   PA:1,   IS:1.3,  ID:1.3,  RB:1.3,  SB:1.3 },
-  "218cm": { JS:1,   JR:0.65, OD:0.65, HA:1,    DR:1,   PA:1,   IS:1.35, ID:1.35, RB:1.35, SB:1.35 },
-  "221cm": { JS:1,   JR:0.6,  OD:0.6,  HA:1,    DR:1,   PA:1,   IS:1.4,  ID:1.4,  RB:1.4,  SB:1.4 },
-  "224cm": { JS:1,   JR:0.55, OD:0.55, HA:1,    DR:1,   PA:1,   IS:1.45, ID:1.45, RB:1.45, SB:1.45 },
-  "226cm": { JS:1,   JR:0.5,  OD:0.5,  HA:1,    DR:1,   PA:1,   IS:1.5,  ID:1.5,  RB:1.5,  SB:1.5 },
-  "229cm": { JS:1,   JR:0.45, OD:0.45, HA:1,    DR:1,   PA:1,   IS:1.55, ID:1.55, RB:1.55, SB:1.55 }
+  "198cm": { JS:1,   JR:1.05, OD:1.05, HA:1,    DR:1,   PA:1.1,   IS:0.95, ID:0.95, RB:0.95, SB:0.95 },
+  "201cm": { JS:1,   JR:1,    OD:1,    HA:1,    DR:1,   PA:1.2,   IS:1,    ID:1,    RB:1,    SB:1   },
+  "203cm": { JS:1,   JR:0.95, OD:0.95, HA:1,    DR:1,   PA:1.3,   IS:1.05, ID:1.05, RB:1.05, SB:1.05 },
+  "206cm": { JS:1,   JR:0.9,  OD:0.9,  HA:1,    DR:1,   PA:1.4,   IS:1.1,  ID:1.1,  RB:1.1,  SB:1.1 },
+  "208cm": { JS:1,   JR:0.85, OD:0.85, HA:1,    DR:1,   PA:1.4,   IS:1.15, ID:1.15, RB:1.15, SB:1.15 },
+  "211cm": { JS:1,   JR:0.8,  OD:0.8,  HA:1,    DR:1,   PA:1.5,   IS:1.2,  ID:1.2,  RB:1.2,  SB:1.2 },
+  "213cm": { JS:1,   JR:0.75, OD:0.75, HA:1,    DR:1,   PA:1.5,   IS:1.25, ID:1.25, RB:1.25, SB:1.25 },
+  "216cm": { JS:1,   JR:0.7,  OD:0.7,  HA:1,    DR:1,   PA:1.5,   IS:1.3,  ID:1.3,  RB:1.3,  SB:1.3 },
+  "218cm": { JS:1,   JR:0.65, OD:0.65, HA:1,    DR:1,   PA:1.7,   IS:1.35, ID:1.35, RB:1.35, SB:1.35 },
+  "221cm": { JS:1,   JR:0.6,  OD:0.6,  HA:1,    DR:1,   PA:2,   IS:1.4,  ID:1.4,  RB:1.4,  SB:1.4 },
+  "224cm": { JS:1,   JR:0.55, OD:0.55, HA:1,    DR:1,   PA:2,   IS:1.45, ID:1.45, RB:1.45, SB:1.45 },
+  "226cm": { JS:1,   JR:0.5,  OD:0.5,  HA:1,    DR:1,   PA:2,   IS:1.5,  ID:1.5,  RB:1.5,  SB:1.5 },
+  "229cm": { JS:1,   JR:0.45, OD:0.45, HA:1,    DR:1,   PA:2,   IS:1.55, ID:1.55, RB:1.55, SB:1.55 }
 };
 
 function getAgeCoefficient(age) {
@@ -123,7 +123,7 @@ function simulateTraining() {
       // 4) apply gains with 15% slowdown at ≥18
       for (let stat in currentGains) {
         let gain = currentGains[stat];
-        if (playerStats[stat] >= 18) gain *= 0.85;
+        if (playerStats[stat] >= 16) gain *= 0.8;
         playerStats[stat] += gain;
       }
     });
