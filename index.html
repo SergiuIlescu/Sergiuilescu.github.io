@@ -34,40 +34,45 @@
 </head>
 <body class="p-4">
   <div class="container">
+    <!-- Instructions -->
     <div class="accordion mb-4" id="instructionsAccordion">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingInfo">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInfo" aria-expanded="true" aria-controls="collapseInfo">
-        Instruções e Tradução
-      </button>
-    </h2>
-    <div id="collapseInfo" class="accordion-collapse collapse show" aria-labelledby="headingInfo" data-bs-parent="#instructionsAccordion">
-      <div class="accordion-body">
-        <div class="row">
-          <div class="col-md-6">
-            <strong>Instruções:</strong><br>
-            1. Para usar o simulador de treino basta colocarem cada nível de cada habilidade do vosso jogador.<br>
-            2. Após preencherem os atributos do jogador, clickem em <strong>'Add Season'</strong>, isto vai fazer com que uma temporada de treinos possa ser simulada, podem seleccionar qualquer tipo de treino, e podem simular várias temporadas de treino.
-          </div>
-          <div class="col-md-6">
-            <strong>Tradução:</strong><br>
-            JS = Lançamento<br>
-            JR = Distancia de Lançamento<br>
-            OD = Defesa Exterior<br>
-            DR = Penetração<br>
-            HA = Drible<br>
-            PA = Passe<br>
-            IS = Lançamento Interior<br>
-            ID = Defesa Interior<br>
-            RB = Ressalto<br>
-            SB = Desarme de Lançamento
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingInfo">
+          <button class="accordion-button" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#collapseInfo"
+                  aria-expanded="true" aria-controls="collapseInfo">
+            Instruções e Tradução
+          </button>
+        </h2>
+        <div id="collapseInfo" class="accordion-collapse collapse show"
+             aria-labelledby="headingInfo" data-bs-parent="#instructionsAccordion">
+          <div class="accordion-body">
+            <div class="row">
+              <div class="col-md-6">
+                <strong>Instruções:</strong><br>
+                1. Para usar o simulador de treino basta colocarem cada nível de cada habilidade do vosso jogador.<br>
+                2. Após preencherem os atributos do jogador, clickem em <strong>'Add Season'</strong>, isto vai fazer com que uma temporada de treinos possa ser simulada, podem seleccionar qualquer tipo de treino, e podem simular várias temporadas de treino.
+              </div>
+              <div class="col-md-6">
+                <strong>Tradução:</strong><br>
+                JS = Lançamento<br>
+                JR = Distancia de Lançamento<br>
+                OD = Defesa Exterior<br>
+                DR = Penetração<br>
+                HA = Drible<br>
+                PA = Passe<br>
+                IS = Lançamento Interior<br>
+                ID = Defesa Interior<br>
+                RB = Ressalto<br>
+                SB = Desarme de Lançamento
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
+    <!-- Controls -->
     <div class="fixed-controls d-flex flex-wrap gap-2 mb-3">
       <button class="btn btn-success" onclick="addSeason()">Add Season</button>
       <button class="btn btn-danger" onclick="removeSeason()">Remove Last Season</button>
@@ -86,6 +91,7 @@
       </div>
     </div>
 
+    <!-- Player Input -->
     <div class="row">
       <div class="col-12 player-card">
         <h5>Player Input</h5>
@@ -119,16 +125,17 @@
           </table>
         </div>
       </div>
-      <!-- Future Player Columns Can Be Cloned Here -->
     </div>
 
+    <!-- Training Results -->
     <div class="mb-5">
       <h5>Player Stats After Training</h5>
       <div id="playerSummary" class="mb-2 fw-bold"></div>
       <table class="table table-bordered text-center align-middle">
         <thead class="table-light">
           <tr>
-            <th>Name</th><th>JS</th><th>JR</th><th>OD</th><th>HA</th><th>DR</th><th>PA</th><th>IS</th><th>ID</th><th>RB</th><th>SB</th>
+            <th>Name</th><th>JS</th><th>JR</th><th>OD</th><th>HA</th><th>DR</th>
+            <th>PA</th><th>IS</th><th>ID</th><th>RB</th><th>SB</th>
           </tr>
         </thead>
         <tbody>
@@ -137,6 +144,7 @@
       </table>
     </div>
 
+    <!-- Seasons -->
     <div id="seasonsContainer"></div>
   </div>
 

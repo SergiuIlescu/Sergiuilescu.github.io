@@ -1,4 +1,4 @@
-// Fixed and refactored logic.js to correctly apply training effects including SB
+// Fixed and refactored logic.js to correctly apply training effects including optional 'No Training' weeks
 
 const baseStats = ['JS','JR','OD','HA','DR','PA','IS','ID','RB','SB'];
 
@@ -85,8 +85,8 @@ function simulateTraining() {
         currentGains[stat] = (effect[stat] * ageCoefficient) * coachCoefficient;
       }
 
-      // Apply elastic effects
-      for (let baseAttr in currentGains) {
+      for (let stat in currentGains) {
+        const baseAttr = stat;
         for (let key in elasticEffects) {
           const [elasticBase, elasticTarget] = key.split('->');
           if (elasticBase === baseAttr && playerStats[elasticTarget] > playerStats[elasticBase]) {
@@ -122,7 +122,11 @@ function addSeason() {
   const seasonDiv = document.createElement('div');
   seasonDiv.id = `season${seasonCount}`;
   seasonDiv.classList.add('mt-5');
-  const trainingOptions = Object.keys(trainingEffects).map(opt => `<option>${opt}</option>`).join('');
+
+  // Build options
+  const trainingOptionsList = Object.keys(trainingEffects).map(opt => `<option>${opt}</option>`).join('');
+  const weekOptions = `<option value="">-- No Training --</option>` + trainingOptionsList;
+  const applyAllOptions = `<option value="">-- Choose Training Type --</option>` + trainingOptionsList;
 
   seasonDiv.innerHTML = `
     <h5>Season ${seasonCount}</h5>
@@ -132,10 +136,7 @@ function addSeason() {
     </div>
     <div class="mb-3">
       <label>Apply training to all 14 weeks:</label>
-      <select class="form-select form-select-sm d-inline-block w-auto" id="seasonApplyAll${seasonCount}">
-        <option value="">-- Choose Training Type --</option>
-        ${trainingOptions}
-      </select>
+      <select class="form-select form-select-sm d-inline-block w-auto" id="seasonApplyAll${seasonCount}">${applyAllOptions}</select>
       <button class="btn btn-sm btn-outline-primary ms-2" onclick="applyTrainingToSeason(${seasonCount})">Apply to All Weeks</button>
     </div>
     <table class="table table-bordered text-center align-middle">
@@ -146,11 +147,12 @@ function addSeason() {
         ${Array.from({ length: 14 }, (_, i) =>
           `<tr>
             <td>Week ${i + 1}</td>
-            <td><select class="form-select form-select-sm training-select">${trainingOptions}</select></td>
+            <td><select class="form-select form-select-sm training-select">${weekOptions}</select></td>
           </tr>`).join('')}
       </tbody>
     </table>
   `;
+
   container.appendChild(seasonDiv);
 }
 
